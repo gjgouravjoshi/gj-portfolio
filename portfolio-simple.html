@@ -152,6 +152,10 @@
     color: white;
     box-shadow: 0 0 28px rgba(255,45,120,0.34);
   }
+  button.btn {
+    cursor: pointer;
+    font-family: inherit;
+  }
 
   .hero {
     min-height: min(86vh, 900px);
@@ -560,6 +564,135 @@
     color: var(--social-color, var(--text));
   }
 
+  .hire-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: grid;
+    place-items: center;
+    padding: clamp(14px, 3vw, 28px);
+  }
+  .hire-modal[hidden] {
+    display: none;
+  }
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(5,5,9,0.78);
+    backdrop-filter: blur(12px);
+  }
+  .hire-panel {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 760px);
+    max-height: min(92vh, 780px);
+    overflow: auto;
+    padding: clamp(22px, 4vw, 34px);
+    background: rgba(17,17,24,0.98);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    box-shadow: 0 26px 90px rgba(0,0,0,0.58), 0 0 34px rgba(255,45,120,0.18);
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: rgba(255,255,255,0.055);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .modal-close svg {
+    width: 18px;
+    height: 18px;
+  }
+  .modal-close:hover,
+  .modal-close:focus-visible {
+    color: var(--pink);
+    border-color: rgba(255,45,120,0.58);
+    box-shadow: 0 0 22px rgba(255,45,120,0.22);
+    transform: translateY(-1px);
+  }
+  .hire-panel h2 {
+    margin: 12px 48px 18px 0;
+    font-size: clamp(2.35rem, 6vw, 4.5rem);
+  }
+  .hire-form {
+    display: grid;
+    gap: 16px;
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .field {
+    display: grid;
+    gap: 7px;
+  }
+  .field-full {
+    grid-column: 1 / -1;
+  }
+  .field label {
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 850;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+    padding: 12px 13px;
+    background: rgba(10,10,15,0.92);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    color: var(--text);
+    font: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+  .field textarea {
+    min-height: 118px;
+    resize: vertical;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    background: rgba(14,14,21,0.98);
+    border-color: rgba(255,45,120,0.62);
+    box-shadow: 0 0 0 3px rgba(255,45,120,0.14);
+  }
+  .field ::placeholder {
+    color: rgba(164,160,184,0.64);
+  }
+  .form-status {
+    min-height: 24px;
+    margin: 0;
+    color: var(--soft);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-start;
+  }
+  body.modal-open {
+    overflow: hidden;
+  }
+
   .reveal {
     opacity: 0;
     transform: translateY(30px) scale(0.975);
@@ -749,6 +882,9 @@
     .print-grid {
       grid-template-columns: 1fr;
     }
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
     .logo-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -894,6 +1030,62 @@
   <div class="social-links" id="footerSocials"></div>
 </footer>
 
+<div class="hire-modal" id="hireModal" hidden>
+  <div class="modal-backdrop" data-close-hire></div>
+  <section class="hire-panel" role="dialog" aria-modal="true" aria-labelledby="hireTitle">
+    <button class="modal-close" type="button" data-close-hire aria-label="Close form">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m6.4 5 5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6L6.4 19 5 17.6l5.6-5.6L5 6.4 6.4 5Z"/></svg>
+    </button>
+    <div class="eyebrow">Project Enquiry</div>
+    <h2 id="hireTitle">Hire <span>Me</span></h2>
+    <form class="hire-form" id="hireForm">
+      <div class="form-grid">
+        <div class="field">
+          <label for="clientName">Name</label>
+          <input id="clientName" name="name" type="text" autocomplete="name" placeholder="Your name" required>
+        </div>
+        <div class="field">
+          <label for="clientEmail">Email</label>
+          <input id="clientEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+        </div>
+        <div class="field">
+          <label for="clientPhone">Phone</label>
+          <input id="clientPhone" name="phone" type="tel" autocomplete="tel" placeholder="+91 00000 00000">
+        </div>
+        <div class="field">
+          <label for="projectType">Project</label>
+          <select id="projectType" name="project" required>
+            <option value="">Select project</option>
+            <option>Logo Design</option>
+            <option>Social Media Design</option>
+            <option>YouTube Thumbnail</option>
+            <option>Packaging Design</option>
+            <option>Print Design</option>
+            <option>Other Design Work</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="projectBudget">Budget</label>
+          <input id="projectBudget" name="budget" type="text" placeholder="Your budget">
+        </div>
+        <div class="field">
+          <label for="projectTimeline">Timeline</label>
+          <input id="projectTimeline" name="timeline" type="text" placeholder="When do you need it?">
+        </div>
+        <div class="field field-full">
+          <label for="projectMessage">Message</label>
+          <textarea id="projectMessage" name="message" placeholder="Tell me about the work" required></textarea>
+        </div>
+      </div>
+      <p class="form-status" id="hireFormStatus" aria-live="polite"></p>
+      <div class="form-actions">
+        <button class="btn btn-email" type="submit" id="hireSubmit"></button>
+        <button class="btn btn-whatsapp" type="button" id="hireWhatsapp"></button>
+      </div>
+    </form>
+  </section>
+</div>
+
 <script>
   // EDIT HERE: text, links, social icons and image URLs.
   const ph = (w, h, seed) => {
@@ -924,6 +1116,7 @@
     const value = String(href || "").trim();
     return value && !value.startsWith("PASTE_") ? value : "";
   };
+  const HIRE_FORM_ENDPOINT = "https://formspree.io/f/mrejypvb";
   const numbered = (prefix, count, ext, w, h, titlePrefix, start = 1) =>
     Array.from({ length: count }, (_, i) => {
       const number = start + i;
@@ -946,7 +1139,7 @@
       { label: "Contact", href: "#contact" }
     ],
     contact: {
-      emailLabel: "Enquire On Mail",
+      emailLabel: "Start a Project",
       emailHref: "mailto:gjgourav708@gmail.com",
       whatsappLabel: "Chat on WhatsApp",
       whatsappHref: "https://wa.me/917089638418"
@@ -1067,7 +1260,7 @@
 
   function actionButtons() {
     return `
-      <a class="btn btn-email" href="${esc(DATA.contact.emailHref)}">${iconSvg("mail")}${esc(DATA.contact.emailLabel)}</a>
+      <button class="btn btn-email hire-form-trigger" type="button">${iconSvg("mail")}${esc(DATA.contact.emailLabel)}</button>
       <a class="btn btn-whatsapp" href="${esc(DATA.contact.whatsappHref)}" target="_blank" rel="noopener">${iconSvg("whatsapp")}${esc(DATA.contact.whatsappLabel)}</a>
     `;
   }
@@ -1162,7 +1355,8 @@
     $("#navLinks").innerHTML = DATA.nav.map((item) =>
       `<li><a href="${esc(item.href)}">${esc(item.label)}</a></li>`
     ).join("");
-    $("#navCta").href = DATA.contact.emailHref;
+    $("#navCta").href = "#hireForm";
+    $("#navCta").classList.add("hire-form-trigger");
     $("#navCta").innerHTML = `${iconSvg("mail")}Hire Me`;
 
     $("#heroBadge").textContent = DATA.hero.badge;
@@ -1210,7 +1404,111 @@
       `<a class="footer-social" href="${esc(item.href)}" target="_blank" rel="noopener" style="--social-color:${esc(item.color)}">${iconSvg(item.icon)}<span>${esc(item.label)}</span></a>`
     ).join("");
     setupResponsiveMenu();
+    setupHireForm();
     observeReveals();
+  }
+
+  function getHireMessage() {
+    const form = $("#hireForm");
+    const data = new FormData(form);
+    const lines = [
+      `Name: ${data.get("name") || ""}`,
+      `Email: ${data.get("email") || ""}`,
+      `Phone: ${data.get("phone") || ""}`,
+      `Project: ${data.get("project") || ""}`,
+      `Budget: ${data.get("budget") || ""}`,
+      `Timeline: ${data.get("timeline") || ""}`,
+      "",
+      "Message:",
+      data.get("message") || ""
+    ];
+    return lines.join("\n");
+  }
+
+  function openHireForm() {
+    const modal = $("#hireModal");
+    if (!modal) return;
+    modal.hidden = false;
+    document.body.classList.add("modal-open");
+    window.setTimeout(() => {
+      const firstField = $("#clientName");
+      if (firstField) firstField.focus();
+    }, 40);
+  }
+
+  function closeHireForm() {
+    const modal = $("#hireModal");
+    if (!modal || modal.hidden) return;
+    modal.hidden = true;
+    document.body.classList.remove("modal-open");
+  }
+
+  function setupHireForm() {
+    const form = $("#hireForm");
+    const modal = $("#hireModal");
+    const status = $("#hireFormStatus");
+    const submit = $("#hireSubmit");
+    const whatsapp = $("#hireWhatsapp");
+    if (!form || !modal || form.dataset.ready === "true") return;
+
+    submit.innerHTML = `${iconSvg("mail")}Send Enquiry`;
+    whatsapp.innerHTML = `${iconSvg("whatsapp")}Send on WhatsApp`;
+    form.dataset.ready = "true";
+
+    document.addEventListener("click", (event) => {
+      if (event.target.closest(".hire-form-trigger")) {
+        event.preventDefault();
+        openHireForm();
+      }
+      if (event.target.closest("[data-close-hire]")) {
+        closeHireForm();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeHireForm();
+    });
+
+    whatsapp.addEventListener("click", () => {
+      if (!form.reportValidity()) return;
+      const text = `Hi Gourav, I want to hire you.\n\n${getHireMessage()}`;
+      const phone = DATA.contact.whatsappHref.replace("https://wa.me/", "").replace(/\D/g, "");
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+      status.textContent = "WhatsApp enquiry opened.";
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const data = new FormData(form);
+      const message = getHireMessage();
+      submit.disabled = true;
+      status.textContent = "Preparing enquiry...";
+
+      if (HIRE_FORM_ENDPOINT) {
+        try {
+          const response = await fetch(HIRE_FORM_ENDPOINT, {
+            method: "POST",
+            headers: { Accept: "application/json" },
+            body: data
+          });
+          if (!response.ok) throw new Error("Form submit failed");
+          form.reset();
+          status.textContent = "Enquiry sent successfully.";
+          submit.disabled = false;
+          return;
+        } catch (error) {
+          status.textContent = "Email draft opened instead.";
+        }
+      }
+
+      const email = DATA.contact.emailHref.replace(/^mailto:/, "");
+      const subject = `Portfolio enquiry from ${data.get("name") || "website"}`;
+      window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+      status.textContent = "Email draft opened.";
+      submit.disabled = false;
+    });
   }
 
   function setupResponsiveMenu() {
