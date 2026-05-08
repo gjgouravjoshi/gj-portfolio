@@ -1291,7 +1291,7 @@
     return `
       <article class="image-card reveal scale-reveal ${extraClass}" style="--delay:${Math.min(index * 45, 360)}ms">
         ${image}
-        <input class="image-upload" type="file" accept="image/*" aria-label="Upload ${esc(item.title)}">
+        
       </article>
     `;
   }
@@ -1300,7 +1300,7 @@
     return `
       <article class="image-card phone-card reveal scale-reveal" style="--delay:${Math.min(index * 45, 360)}ms">
         <img src="${esc(item.image)}" data-fallback="${esc(item.fallback || "")}" alt="${esc(item.title)}" loading="lazy" decoding="async">
-        <input class="image-upload" type="file" accept="image/*" aria-label="Upload ${esc(item.title)}">
+        
       </article>
     `;
   }
